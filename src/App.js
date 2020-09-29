@@ -40,7 +40,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [nameOfClass, setNameOfClass] = useState('')
   const [responseMessage, setresponseMessage] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState('');
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -53,8 +56,19 @@ const App = () => {
     if(LoggingInUser) {
       const user = JSON.parse(LoggingInUser);
       setUser(user)
+
     }
   }, [])
+
+  useEffect(() => {
+    const PostingUser = JSON.parse(localStorage.getItem('LoggedInUser'));
+    if(PostingUser) {
+      const newToken = PostingUser.token
+      blogService.setToken(newToken)
+    }
+    return
+  }, [])
+
 
   const handleUsernameChange = (e) => {
     const entry = e.target.value
@@ -72,29 +86,60 @@ const App = () => {
     console.log('logging in');
 
     try {
-      const response = await loginService.login({
+      const user = await loginService.login({
         username,
         password
       });
-      localStorage.setItem('LoggedInUser', JSON.stringify(response.data))
-      setUser(response.data);
-      console.log(response.data)
-      setName(response.data.name)
+
+      blogService.setToken(user.token);
+      localStorage.setItem('LoggedInUser', JSON.stringify(user))
+      setUser(user);
+      setName(user.name)
       setUsername('');
       setPassword('');
     } catch (error) {
       setNameOfClass('error')
-      setresponseMessage('Wrong credentials')
+      setresponseMessage('Wrong username or password')
       setTimeout(() => {
         setNameOfClass('')
         setresponseMessage('')
       }, 3000)
     }
 
-
-
   }
 
+  const handleBlogPosts = async (e) => {
+    e.preventDefault();
+
+    const newPost = {
+      title,
+      author,
+      url
+    }
+
+    const response = await blogService.create(newPost);
+    setBlogs(blogs.concat(response));
+    setNameOfClass('response')
+    setresponseMessage(`A new blog ${title} by ${author} added`)
+    setTimeout(() => {
+      setNameOfClass('')
+      setresponseMessage('')
+    }, 3000)
+    setTitle('');
+    setAuthor('');
+    setUrl('');
+  }
+
+  const LogOut = (e) => {
+    const loggingOutUser = localStorage.getItem('LoggedInUser');
+    if(loggingOutUser){
+      localStorage.removeItem('LoggedInUser');
+      setUser(null);
+
+    }
+    return
+  }
+  
 
   return (
     <div>
@@ -110,6 +155,35 @@ const App = () => {
       {user !== null && 
         <div>
             ${name} logged in
+            <button onClick={LogOut}>logout</button>
+            <h2>Create new</h2>
+            <form onSubmit={handleBlogPosts}>
+              <div>
+                title:
+                <input
+                type='text'
+                value={title}
+                name='title'
+                onChange={((e) => setTitle(e.target.value))}/>
+              </div>
+              <div>
+                author:
+                <input
+                type='text'
+                value={author}
+                name='author'
+                onChange={((e) => setAuthor(e.target.value))}/>
+              </div>
+              <div>
+                url:
+                <input
+                type='text'
+                value={url}
+                name='url'
+                onChange={((e) => setUrl(e.target.value))}/>
+              </div>
+              <button>create</button>
+            </form>
             {blogs.map(blog =>
               <Blog key={blog.id} blog={blog} />
             )}
