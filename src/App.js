@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
-import loginService from './services/login'
+import loginService from './services/login';
+import './App.css'
 
 
 const LoginForm = ({ username, password, handlePasswordChange, handleUsernameChange, handleLogin }) => (
   <div>
-    <h2>Log in to application</h2>
     <form onSubmit={handleLogin}>
       <div>
         username
@@ -38,11 +38,22 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [nameOfClass, setNameOfClass] = useState('')
+  const [responseMessage, setresponseMessage] = useState('')
+  const [name, setName] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
+  }, [])
+
+  useEffect(() => {
+    const LoggingInUser = localStorage.getItem('LoggedInUser');
+    if(LoggingInUser) {
+      const user = JSON.parse(LoggingInUser);
+      setUser(user)
+    }
   }, [])
 
   const handleUsernameChange = (e) => {
@@ -60,12 +71,27 @@ const App = () => {
     e.preventDefault();
     console.log('logging in');
 
-    const response = await loginService.login({
-      username,
-      password
-    });
+    try {
+      const response = await loginService.login({
+        username,
+        password
+      });
+      localStorage.setItem('LoggedInUser', JSON.stringify(response.data))
+      setUser(response.data);
+      console.log(response.data)
+      setName(response.data.name)
+      setUsername('');
+      setPassword('');
+    } catch (error) {
+      setNameOfClass('error')
+      setresponseMessage('Wrong credentials')
+      setTimeout(() => {
+        setNameOfClass('')
+        setresponseMessage('')
+      }, 3000)
+    }
 
-    setUser(response)
+
 
   }
 
@@ -73,15 +99,22 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <h2>Log in to application</h2>
+      <div className={nameOfClass}>{responseMessage}</div>
       {user === null && <LoginForm
       handleLogin={handleLogin}
       password={password}
       username={username}
       handleUsernameChange={handleUsernameChange}
       handlePasswordChange={handlePasswordChange}/>}
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      {user !== null && 
+        <div>
+            ${name} logged in
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} />
+            )}
+        </div>}
+
     </div>
   )
 }
