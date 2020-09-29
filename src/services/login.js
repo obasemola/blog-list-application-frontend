@@ -6,4 +6,4 @@ const login = async (loginInfo) => {
 }
 
 
-export default login;
+export default { login }

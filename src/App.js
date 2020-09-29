@@ -37,7 +37,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -73,7 +73,12 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <LoginForm handleLogin={handleLogin} password={password} username={username} handleUsernameChange={handleUsernameChange} handlePasswordChange={handlePasswordChange}/>
+      {user === null && <LoginForm
+      handleLogin={handleLogin}
+      password={password}
+      username={username}
+      handleUsernameChange={handleUsernameChange}
+      handlePasswordChange={handlePasswordChange}/>}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
