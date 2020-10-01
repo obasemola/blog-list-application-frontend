@@ -46,13 +46,6 @@ const App = ({ author, title }) => {
   }, [])
 
 
-  const sortedArray = () => {
-    console.log(blogs)
-  }
-
-
-
-
   const handleVisibilityToggle = (id) => {
     setBlogId(id);
   }
@@ -108,6 +101,23 @@ const App = ({ author, title }) => {
 
     const data = await blogService.update(id, newBlog)
     setBlogs(blogs.map((blog) => blog.id === id ? data : blog))
+  }
+
+  const handleDelete = async (e) => {
+    const id = e.target.id;
+    const title = e.target.title;
+    const name = e.target.name
+
+    if(window.confirm(`Remove blog ${title} by ${name}`)){
+      const data = await blogService.remove(id);
+      setBlogs(blogs.filter(blog => blog.id !== id));
+      setBlogId(null)
+    } else {
+      return;
+    }
+
+    
+
   }
 
   const handleBlogPosts = async (newPost) => {
@@ -168,7 +178,8 @@ const App = ({ author, title }) => {
               blog={blog}
               name={name}
               visibleId={blogId}
-              handleLikes={handleLikes}            
+              handleLikes={handleLikes}  
+              handleDelete={handleDelete}          
               />)}
         </div>}
 
