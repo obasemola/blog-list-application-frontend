@@ -12,7 +12,7 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
     marginBottom: 5
   }
 
-  const showWhenVisible = { display: visibleId ? 'none' : '' };
+  const showWhenVisible = { display: visibleId ? 'none' : '' }
   const hideWhenInvisible = { display: visibleId ? '' : 'none' }
 
   return (
@@ -23,8 +23,8 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
           <button style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>view</button>
           <button style={hideWhenInvisible} onClick={() => handleClearBlogId()}>hide</button>
         </div>
-   
-        <div style={{display: blog.id === visibleId ? '' : 'none'}}>
+
+        <div style={{ display: blog.id === visibleId ? '' : 'none' }}>
           <div>
             {blog.url}
           </div>
@@ -44,6 +44,6 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
       </div>
     </div>
   )
-  
+
 }
 export default Blog
