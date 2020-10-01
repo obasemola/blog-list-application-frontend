@@ -2,45 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import BlogForm from './components/BlogForm';
+import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable'
 import './App.css'
 
 
-const LoginForm = ({
-  username,
-  password,
-  handlePasswordChange,
-  handleUsernameChange,
-  handleLogin
-}) => (
-  <div>
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type='username'
-          value={username}
-          name='username'
-          onChange={handleUsernameChange}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type='password'
-          value={password}
-          name='password'
-          onChange={handlePasswordChange}
-          />
-      </div>
-      <button>login</button>
-    </form>
-
-  </div>
-
-)
-
-const App = () => {
+const App = ({ author, title }) => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -48,9 +16,6 @@ const App = () => {
   const [nameOfClass, setNameOfClass] = useState('')
   const [responseMessage, setresponseMessage] = useState('')
   const [name, setName] = useState('');
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -115,13 +80,7 @@ const App = () => {
 
   }
 
-  const handleBlogPosts = async (e) => {
-    e.preventDefault();
-    const newPost = {
-      title,
-      author,
-      url
-    }
+  const handleBlogPosts = async (newPost) => {
     blogRef.current.toggleVisibility()
 
     const response = await blogService.create(newPost);
@@ -132,9 +91,7 @@ const App = () => {
       setNameOfClass('')
       setresponseMessage('')
     }, 3000)
-    setTitle('');
-    setAuthor('');
-    setUrl('');
+
   }
 
   const LogOut = (e) => {
@@ -155,7 +112,6 @@ const App = () => {
       <h2>blogs</h2>
       <h2>Log in to application</h2>
       <div className={nameOfClass}>{responseMessage}</div>
-      
       {user === null && <LoginForm
       handleLogin={handleLogin}
       password={password}
@@ -171,34 +127,7 @@ const App = () => {
               buttonLabel='create'
               ref={blogRef}
               >
-              <h2>Create new</h2>
-              <form onSubmit={handleBlogPosts}>
-                <div>
-                  title:
-                  <input
-                  type='text'
-                  value={title}
-                  name='title'
-                  onChange={((e) => setTitle(e.target.value))}/>
-                </div>
-                <div>
-                  author:
-                  <input
-                  type='text'
-                  value={author}
-                  name='author'
-                  onChange={((e) => setAuthor(e.target.value))}/>
-                </div>
-                <div>
-                  url:
-                  <input
-                  type='text'
-                  value={url}
-                  name='url'
-                  onChange={((e) => setUrl(e.target.value))}/>
-                </div>
-                <button>create</button>
-              </form>
+              <BlogForm handlePosts={handleBlogPosts}/>
             </Togglable>
             {blogs.map(blog =>
               <Blog key={blog.id} blog={blog} />
