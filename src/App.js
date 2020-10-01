@@ -88,6 +88,18 @@ const App = ({ author, title }) => {
 
   }
 
+  const handleLikes = async (e) => {
+    const blog = blogs.find((blog) => blog.id === e.target.id);
+    const id = e.target.id;
+    const newBlog = {
+      ...blog,
+      likes: blog.likes + 1
+    }
+
+    const data = await blogService.update(id, newBlog)
+    setBlogs(blogs.map((blog) => blog.id === id ? data : blog))
+  }
+
   const handleBlogPosts = async (newPost) => {
     blogRef.current.toggleVisibility()
 
@@ -145,7 +157,8 @@ const App = ({ author, title }) => {
               key={blog.id}
               blog={blog}
               name={name}
-              visibleId={blogId}            
+              visibleId={blogId}
+              handleLikes={handleLikes}            
               />)}
         </div>}
 

@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 
-const Blog = ({  name, blog, visibleId, handleItemClick, handleClearBlogId })  => {
-  const [showDetails, setShowDetails] = useState(false)
+const Blog = ({  handleLikes, name, blog, visibleId, handleItemClick, handleClearBlogId })  => {
 
-  const revealDetails = () => {
-    setShowDetails(!showDetails)
-  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -34,7 +30,7 @@ const Blog = ({  name, blog, visibleId, handleItemClick, handleClearBlogId })  =
     </div>
     <div>
       likes {blog.likes}
-      <button>like</button>
+      <button id={blog.id} onClick={handleLikes}>like</button>
     </div>
     <div>
       {name}
