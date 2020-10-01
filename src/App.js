@@ -36,6 +36,7 @@ const App = ({ author, title }) => {
     }
   }, [])
 
+
   useEffect(() => {
     const PostingUser = JSON.parse(localStorage.getItem('LoggedInUser'));
     if (PostingUser) {
@@ -44,6 +45,7 @@ const App = ({ author, title }) => {
     }
     return
   }, [])
+
 
 
   const handleVisibilityToggle = (id) => {
@@ -88,8 +90,16 @@ const App = ({ author, title }) => {
         setresponseMessage('')
       }, 3000)
     }
-
   }
+
+  const getToken = () => {
+    const tokenUser = JSON.parse(localStorage.getItem('LoggedInUser'));
+    const toBeUsedToken = tokenUser.token;
+    return toBeUsedToken
+  }
+
+
+
 
   const handleLikes = async (e) => {
     const blog = blogs.find((blog) => blog.id === e.target.id);
@@ -115,9 +125,6 @@ const App = ({ author, title }) => {
     } else {
       return;
     }
-
-    
-
   }
 
   const handleBlogPosts = async (newPost) => {
@@ -179,7 +186,8 @@ const App = ({ author, title }) => {
               name={name}
               visibleId={blogId}
               handleLikes={handleLikes}  
-              handleDelete={handleDelete}          
+              handleDelete={handleDelete}
+              token={getToken()}          
               />)}
         </div>}
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-const Blog = ({ handleDelete, handleLikes, name, blog, visibleId, handleItemClick, handleClearBlogId })  => {
+const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleItemClick, handleClearBlogId })  => {
 
 
   const blogStyle = {
@@ -35,7 +35,11 @@ const Blog = ({ handleDelete, handleLikes, name, blog, visibleId, handleItemClic
           <div>
             {name}
           </div>
-          <button name={blog.author} title={blog.title} onClick={handleDelete} id={blog.id}>delete</button>
+          {token && <button
+            name={blog.author}
+            title={blog.title}
+            onClick={handleDelete}
+            id={blog.id}>delete</button>}
         </div>
       </div>
     </div>
