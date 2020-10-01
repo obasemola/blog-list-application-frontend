@@ -16,31 +16,40 @@ const App = ({ author, title }) => {
   const [nameOfClass, setNameOfClass] = useState('')
   const [responseMessage, setresponseMessage] = useState('')
   const [name, setName] = useState('');
+  const [blogId, setBlogId] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+      setBlogs(blogs)
+    )
   }, [])
 
   useEffect(() => {
     const LoggingInUser = localStorage.getItem('LoggedInUser');
-    if(LoggingInUser) {
+    if (LoggingInUser) {
       const user = JSON.parse(LoggingInUser);
       setUser(user)
-
+      setName(user.name)
     }
   }, [])
 
   useEffect(() => {
     const PostingUser = JSON.parse(localStorage.getItem('LoggedInUser'));
-    if(PostingUser) {
+    if (PostingUser) {
       const newToken = PostingUser.token
       blogService.setToken(newToken)
     }
     return
   }, [])
 
+
+  const handleVisibilityToggle = (id) => {
+    setBlogId(id);
+  }
+
+  const handleClearBlogId = () => {
+    setBlogId(null)
+  }
 
   const handleUsernameChange = (e) => {
     const entry = e.target.value
@@ -51,7 +60,6 @@ const App = ({ author, title }) => {
     const entry = e.target.value
     setPassword(entry)
   }
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -96,7 +104,7 @@ const App = ({ author, title }) => {
 
   const LogOut = (e) => {
     const loggingOutUser = localStorage.getItem('LoggedInUser');
-    if(loggingOutUser){
+    if (loggingOutUser) {
       localStorage.removeItem('LoggedInUser');
       setUser(null);
 
@@ -107,31 +115,38 @@ const App = ({ author, title }) => {
   const blogRef = useRef()
 
 
+
   return (
     <div>
       <h2>blogs</h2>
       <h2>Log in to application</h2>
       <div className={nameOfClass}>{responseMessage}</div>
       {user === null && <LoginForm
-      handleLogin={handleLogin}
-      password={password}
-      username={username}
-      handleUsernameChange={handleUsernameChange}
-      handlePasswordChange={handlePasswordChange}/>}
-      
-      {user !== null && 
+        handleLogin={handleLogin}
+        password={password}
+        username={username}
+        handleUsernameChange={handleUsernameChange}
+        handlePasswordChange={handlePasswordChange} />}
+
+      {user !== null &&
         <div>
-            ${name} logged in
+          ${name} logged in
             <button onClick={LogOut}>logout</button>
-            <Togglable
-              buttonLabel='create'
-              ref={blogRef}
-              >
-              <BlogForm handlePosts={handleBlogPosts}/>
-            </Togglable>
-            {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
-            )}
+          <Togglable
+            buttonLabel='create'
+            ref={blogRef}
+          >
+            <BlogForm handlePosts={handleBlogPosts} />
+          </Togglable>
+          {blogs.map(blog =>
+            <Blog
+              handleItemClick={handleVisibilityToggle}
+              handleClearBlogId={handleClearBlogId}
+              key={blog.id}
+              blog={blog}
+              name={name}
+              visibleId={blogId}            
+              />)}
         </div>}
 
     </div>
