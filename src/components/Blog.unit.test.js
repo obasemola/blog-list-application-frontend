@@ -62,6 +62,23 @@ describe('should render blog component properly', () => {
 
   })
 
-  test('like button should be called twice', () )
+  test('like button should be called twice', () => {
+
+    const mockHandler = jest.fn()
+    const secondMockHandler = jest.fn()
+
+    const component = render(
+      <Blog blog={blog} handleLikes={secondMockHandler} visibleId={5} handleItemClick={mockHandler}/>
+    )
+
+    const button = component.getByText('view')
+    fireEvent.click(button)
+    const secondButton = component.getByText('like')
+    fireEvent.click(secondButton)
+    fireEvent.click(secondButton)
+
+    expect(secondMockHandler.mock.calls).toHaveLength(2)
+
+  })
 })
 
