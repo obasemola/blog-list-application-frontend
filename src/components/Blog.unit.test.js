@@ -1,11 +1,20 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import Blog from './Blog'
+
+const blog = {
+  id: 5,
+  title: 'bosenlo',
+  author: 'wizza',
+  url: 'wiz.com',
+  likes: 5
+}
 
 
 describe('should render blog component properly', () => {
   test('should render properties',() => {
+
     const blog = {
       title: 'bosenlo',
       author: 'wizza',
@@ -27,22 +36,32 @@ describe('should render blog component properly', () => {
 
   test('should render only title and author initially', () => {
 
-    const blog = {
-      title: 'bosenlo',
-      author: 'wizza',
-      url: 'wiz.com',
-      likes: 5
-    }
-
     const component = render(
       <Blog blog={blog} />
     )
 
-    component.debug()
+    const div = component.container.querySelector('.secondDiv')
+
+    expect(div).toBeNull()
+  })
+
+  test('should display the rest of the information besides author and title', () => {
+
+    const mockHandler = jest.fn()
+
+    const component = render(
+      <Blog blog={blog} visibleId={5} handleItemClick={mockHandler}/>
+    )
 
     const div = component.container.querySelector('.secondDiv')
 
-    expect(div).toHaveStyle('display: none')
+    const button = component.getByText('view')
+    fireEvent.click(button)
+
+    expect(div).not.toBeNull()
+
   })
+
+  test('like button should be called twice', () )
 })
 
