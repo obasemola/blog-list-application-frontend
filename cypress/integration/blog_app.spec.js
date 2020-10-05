@@ -40,7 +40,7 @@ describe('Blog app', function() {
   })
 
   describe('when logged in', function(){
-    it('a blog can be created', function(){
+    it.only('a blog can be created', function(){
       cy.get('#username').type('basateer')
       cy.get('#password').type('from')
       cy.get('#login').click()
@@ -50,6 +50,14 @@ describe('Blog app', function() {
       cy.get('.url').type('zig.com')
       cy.get('#create').click()
       cy.contains('new blog')
+      cy.get('#view').click()
+      cy.get('.like').click()
+    })
+  })
+
+  describe('delete', function(){
+    it('user can delete', function(){
+      
     })
   })
 })

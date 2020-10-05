@@ -31,7 +31,7 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
             </div>
             <div>
             likes {blog.likes}
-              <button id={blog.id} onClick={handleLikes}>like</button>
+              <button className='like' id={blog.id} onClick={handleLikes}>like</button>
             </div>
             <div>
               {name}
