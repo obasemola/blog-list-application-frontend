@@ -158,7 +158,6 @@ const App = ({ author, title }) => {
   return (
     <div>
       <h2>blogs</h2>
-      <h2>Log in to application</h2>
       <div className={nameOfClass}>{responseMessage}</div>
       {user === null && <LoginForm
         handleLogin={handleLogin}
@@ -169,7 +168,7 @@ const App = ({ author, title }) => {
 
       {user !== null &&
         <div>
-          ${name} logged in
+          {name} logged in
           <button onClick={LogOut}>logout</button>
           <Togglable
             buttonLabel='create'

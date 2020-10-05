@@ -1,6 +1,7 @@
-import React from 'react';
+import React from 'react'
+import BlogForm from './BlogForm'
 
-export default ({
+const Blogform = ({
   username,
   password,
   handlePasswordChange,
@@ -8,10 +9,12 @@ export default ({
   handleLogin
 }) => (
   <div>
+    <h2>Log in to application</h2>
     <form onSubmit={handleLogin}>
       <div>
         username
         <input
+          id='username'
           type='username'
           value={username}
           name='username'
@@ -21,11 +24,12 @@ export default ({
       <div>
         password
         <input
+          id='password'
           type='password'
           value={password}
           name='password'
           onChange={handlePasswordChange}
-          />
+        />
       </div>
       <button>login</button>
     </form>
@@ -33,3 +37,7 @@ export default ({
   </div>
 
 )
+
+BlogForm.displayName = 'Blogform'
+
+export default Blogform
