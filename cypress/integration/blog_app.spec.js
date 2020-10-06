@@ -40,7 +40,7 @@ describe('Blog app', function() {
   })
 
   describe('when logged in', function(){
-    it.only('a blog can be created', function(){
+    beforeEach(function(){
       cy.get('#username').type('basateer')
       cy.get('#password').type('from')
       cy.get('#login').click()
@@ -49,16 +49,49 @@ describe('Blog app', function() {
       cy.get('.author').type('zig')
       cy.get('.url').type('zig.com')
       cy.get('#create').click()
-      cy.contains('new blog')
       cy.get('#view').click()
+    })
+
+    it('a blog can be created', function(){
       cy.get('.like').click()
+      cy.get('#logout').click()
+    })
+
+    it('user can delete', function(){
+      cy.contains('wizzy logged in')
+      cy.contains('wizzy')
+      cy.get('.deleteBlog').click()
+      cy.should('not.contain','wizzy')
     })
   })
 
-  describe('delete', function(){
-    it('user can delete', function(){
-      
+  describe('if sorted according to likes', function(){
+    it.only('is sorted according to likes', function(){
+      cy.get('#username').type('basateer')
+      cy.get('#password').type('from')
+      cy.get('#login').click()
+      cy.get('#dynamic').click()
+      cy.get('.title').type('new blog')
+      cy.get('.author').type('zig')
+      cy.get('.url').type('zig.com')
+      cy.get('#create').click()
+      cy.get('#dynamic').click()
+      cy.get('.title').type('new blog2')
+      cy.get('.author').type('zig')
+      cy.get('.url').type('zig.com')
+      cy.get('#create').click()
+      cy.get('#dynamic').click()
+      cy.get('.title').type('new blog3')
+      cy.get('.author').type('zig')
+      cy.get('.url').type('zig.com')
+      cy.get('#create').click()
+      cy.get('#dynamic').click()
+      cy.get('.title').type('new blog4')
+      cy.get('.author').type('zig')
+      cy.get('.url').type('zig.com')
+      cy.get('#create').click()
     })
   })
+
 })
 

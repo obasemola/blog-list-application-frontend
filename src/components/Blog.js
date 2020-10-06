@@ -29,7 +29,7 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
             <div>
               {blog.url}
             </div>
-            <div>
+            <div id='likes'>
             likes {blog.likes}
               <button className='like' id={blog.id} onClick={handleLikes}>like</button>
             </div>
@@ -40,6 +40,7 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
               name={blog.author}
               title={blog.title}
               onClick={handleDelete}
+              className='deleteBlog'
               id={blog.id}>delete</button>}
           </div>
         }

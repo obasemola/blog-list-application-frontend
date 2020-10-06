@@ -68,7 +68,6 @@ const App = ({ author, title }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    console.log('logging in')
 
     try {
       const user = await loginService.login({
