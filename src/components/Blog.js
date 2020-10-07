@@ -12,8 +12,8 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
     marginBottom: 5
   }
 
-  const showWhenVisible = { display: visibleId ? 'none' : '' }
-  const hideWhenInvisible = { display: visibleId ? '' : 'none' }
+  const showWhenVisible = { display: visibleId === blog.id ? 'none' : '' }
+  const hideWhenInvisible = { display: visibleId === blog.id ? '' : 'none' }
 
   return (
     <div>
@@ -21,16 +21,16 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
         <div className='firstDiv'>
           {blog.title} {blog.author}
           <button id='view' style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>view</button>
-          <button style={hideWhenInvisible} onClick={() => handleClearBlogId()}>hide</button>
+          <button id='hide' style={hideWhenInvisible} onClick={() => handleClearBlogId()}>hide</button>
         </div>
 
-        {blog.id === visibleId &&
+        {blog.id !== visibleId &&
           <div className='secondDiv'>
             <div>
               {blog.url}
             </div>
             <div id='likes'>
-            likes {blog.likes}
+            likes <span id='num_of_likes'>{blog.likes}</span>
               <button className='like' id={blog.id} onClick={handleLikes}>like</button>
             </div>
             <div>
