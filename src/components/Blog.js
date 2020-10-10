@@ -20,8 +20,8 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
       <div className='mainDiv' style={blogStyle}>
         <div className='firstDiv'>
           {blog.title} {blog.author}
-          <button id='view' style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>view</button>
-          <button id='hide' style={hideWhenInvisible} onClick={() => handleClearBlogId()}>hide</button>
+          <button id='hide'  style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>hide</button>
+          <button id='view' style={hideWhenInvisible} onClick={() => handleClearBlogId()}>view</button>
         </div>
 
         {blog.id !== visibleId &&
