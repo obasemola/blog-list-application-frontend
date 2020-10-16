@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { createStore } from 'redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -7,6 +8,33 @@ import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import './App.css'
 
+const setNotification = (notification, color) => {
+  return {
+    type: 'SHOW',
+    notification,
+    color
+  }
+}
+
+
+const initialState = ''
+
+const notificationReducer = (state = initialState, action) => {
+  switch (action.type) {
+  case 'SHOW':
+    return {
+      notification: action.notification,
+      color: action.color
+    }
+
+  default:
+    return state
+  }
+
+}
+
+const store = createStore(notificationReducer)
+
 
 const App = ({ author, title }) => {
   const [blogs, setBlogs] = useState([])
@@ -14,7 +42,7 @@ const App = ({ author, title }) => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [nameOfClass, setNameOfClass] = useState('')
-  const [responseMessage, setresponseMessage] = useState('')
+  // const [responseMessage, setresponseMessage] = useState('')
   const [name, setName] = useState('')
   const [blogId, setBlogId] = useState(null)
 
@@ -83,10 +111,12 @@ const App = ({ author, title }) => {
       setPassword('')
     } catch (error) {
       setNameOfClass('error')
-      setresponseMessage('Wrong username or password')
+      store.dispatch(setNotification('Wrong username or password'))
+      // setresponseMessage('Wrong username or password')
       setTimeout(() => {
-        setNameOfClass('')
-        setresponseMessage('')
+        setNameOfClass()
+        store.dispatch(setNotification(''))
+        // setresponseMessage('')
       }, 3000)
     }
   }
@@ -118,6 +148,7 @@ const App = ({ author, title }) => {
     const name = e.target.name
 
     if(window.confirm(`Remove blog ${title} by ${name}`)){
+      console.log(id)
       const data = await blogService.remove(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
       setBlogId(null)
@@ -132,10 +163,22 @@ const App = ({ author, title }) => {
     const response = await blogService.create(newPost)
     setBlogs(blogs.concat(response))
     setNameOfClass('response')
-    setresponseMessage(`A new blog ${title} by ${author} added`)
+    store.dispatch({
+      type: 'SHOW',
+      notification: `A new blog ${newPost.title} by ${newPost.author} added`,
+      color: 'response'
+    })
+    console.log(store.getState().notification)
+    console.log(store.getState().color)
+    // setresponseMessage(`A new blog ${title} by ${author} added`)
     setTimeout(() => {
       setNameOfClass('')
-      setresponseMessage('')
+      store.dispatch({
+        type: 'SHOW',
+        notification: ''
+      })
+      store.getState()
+      // setresponseMessage('')
     }, 3000)
 
   }
@@ -154,10 +197,11 @@ const App = ({ author, title }) => {
 
 
 
+
   return (
     <div>
       <h2>blogs</h2>
-      <div id='error' className={nameOfClass}>{responseMessage}</div>
+      <div id='error' className={store.getState().color}>{store.getState().notification}</div>
       {user === null && <LoginForm
         handleLogin={handleLogin}
         password={password}

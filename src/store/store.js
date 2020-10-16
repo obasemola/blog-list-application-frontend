@@ -3,11 +3,11 @@ import notificationReducer from '../reducers/notificationReducer'
 
 
 const reducer = combineReducers({
-  notifications: notificationReducer
+  notification: notificationReducer
 })
 
-const store = createStore({
+const store = createStore(
   reducer
-})
+)
 
 export default store
