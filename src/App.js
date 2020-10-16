@@ -1,50 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { createStore } from 'redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import { setNotification } from './reducers/notificationReducer'
 import './App.css'
 
-const setNotification = (notification, color) => {
-  return {
-    type: 'SHOW',
-    notification,
-    color
-  }
-}
 
-
-const initialState = ''
-
-const notificationReducer = (state = initialState, action) => {
-  switch (action.type) {
-  case 'SHOW':
-    return {
-      notification: action.notification,
-      color: action.color
-    }
-
-  default:
-    return state
-  }
-
-}
-
-const store = createStore(notificationReducer)
-
-
-const App = ({ author, title }) => {
+const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [nameOfClass, setNameOfClass] = useState('')
-  // const [responseMessage, setresponseMessage] = useState('')
   const [name, setName] = useState('')
   const [blogId, setBlogId] = useState(null)
+
+  const dispatch = useDispatch()
+  const notifications = useSelector(state => state)
+
+  const setResponseAndClass = (newResponse, newClass) => {
+    dispatch(setNotification(newResponse, newClass))
+    console.log(notifications.color)
+    setTimeout(() => {
+      dispatch(setNotification('', ''))
+    }, 3000)
+  }
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -110,14 +93,9 @@ const App = ({ author, title }) => {
       setUsername('')
       setPassword('')
     } catch (error) {
-      setNameOfClass('error')
-      store.dispatch(setNotification('Wrong username or password'))
-      // setresponseMessage('Wrong username or password')
-      setTimeout(() => {
-        setNameOfClass()
-        store.dispatch(setNotification(''))
-        // setresponseMessage('')
-      }, 3000)
+      const newResponse = 'Wrong username or password'
+      const newClass = 'error'
+      setResponseAndClass(newResponse, newClass)
     }
   }
 
@@ -162,24 +140,9 @@ const App = ({ author, title }) => {
 
     const response = await blogService.create(newPost)
     setBlogs(blogs.concat(response))
-    setNameOfClass('response')
-    store.dispatch({
-      type: 'SHOW',
-      notification: `A new blog ${newPost.title} by ${newPost.author} added`,
-      color: 'response'
-    })
-    console.log(store.getState().notification)
-    console.log(store.getState().color)
-    // setresponseMessage(`A new blog ${title} by ${author} added`)
-    setTimeout(() => {
-      setNameOfClass('')
-      store.dispatch({
-        type: 'SHOW',
-        notification: ''
-      })
-      store.getState()
-      // setresponseMessage('')
-    }, 3000)
+    const newResponse = `A new blog ${newPost.title} by ${newPost.author} added`
+    const newClass = 'response'
+    setResponseAndClass(newResponse, newClass)
 
   }
 
@@ -201,7 +164,7 @@ const App = ({ author, title }) => {
   return (
     <div>
       <h2>blogs</h2>
-      <div id='error' className={store.getState().color}>{store.getState().notification}</div>
+      <div id='error' className={notifications.color}>{notifications.notification}</div>
       {user === null && <LoginForm
         handleLogin={handleLogin}
         password={password}

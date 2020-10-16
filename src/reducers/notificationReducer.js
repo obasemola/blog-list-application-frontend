@@ -1,7 +1,7 @@
-export const setNotification = (notification) => {
+export const setNotification = (notification, color) => {
   return {
     type: 'SHOW',
-    notification
+    notification, color
   }
 }
 
@@ -11,7 +11,11 @@ const initialState = ''
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'SHOW':
-    return action.notification
+    return {
+      notification: action.notification,
+      color: action.color
+    }
+    
 
   default:
     return state

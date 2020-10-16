@@ -2,12 +2,12 @@ import { createStore, combineReducers } from 'redux'
 import notificationReducer from '../reducers/notificationReducer'
 
 
-const reducer = combineReducers({
-  notification: notificationReducer
-})
 
-const store = createStore(
-  reducer
-)
+const store = createStore(notificationReducer)
+store.subscribe(() => {
+  const newState = store.getState()
+  console.log(newState.notification)
+  console.log(newState.color)
+})
 
 export default store
