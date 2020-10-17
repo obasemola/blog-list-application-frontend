@@ -10,8 +10,8 @@ const reducer = combineReducers({
 const store = createStore(reducer)
 store.subscribe(() => {
   const newState = store.getState()
-  console.log(newState.notification)
-  console.log(newState.color)
+  console.log(newState.blogs)
+  // console.log(newState.color)
 })
 
 export default store

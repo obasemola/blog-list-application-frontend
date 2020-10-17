@@ -1,10 +1,11 @@
-export const addBlog = (title, author, url) => {
+export const addBlog = ({ title, author, url, id }) => {
   return {
     type: 'ADD',
     data: {
       title,
       author,
-      url
+      url,
+      id
     }
   }
 }
@@ -20,11 +21,14 @@ const initialState = []
 
 const blogReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'INIT':
-      return action.data
+  case 'INIT':
+    return action.data
 
-    default:
-      return state
+  case 'ADD':
+    return state.concat(action.data)
+
+  default:
+    return state
   }
 }
 

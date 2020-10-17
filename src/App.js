@@ -7,7 +7,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs, addBlog } from './reducers/blogReducer'
 import './App.css'
 
 
@@ -138,7 +138,7 @@ const App = () => {
     blogRef.current.toggleVisibility()
 
     const response = await blogService.create(newPost)
-    setBlogs(blogs.concat(response))
+    dispatch(addBlog(response))
     const newResponse = `A new blog ${newPost.title} by ${newPost.author} added`
     const newClass = 'response'
     setResponseAndClass(newResponse, newClass)

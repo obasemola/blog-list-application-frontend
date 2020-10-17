@@ -18,9 +18,6 @@ const BlogForm = ({ handlePosts }) => {
       author,
       url
     })
-    console.log(title)
-    console.log(author)
-    console.log(url)
     e.target.title.value = ''
     e.target.author.value = ''
     e.target.url.value = ''
