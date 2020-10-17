@@ -5,14 +5,15 @@ export const initializeBlogs = (blogs) => {
   }
 }
 
-export const addBlog = ({ title, author, url, id }) => {
+export const addBlog = ({ title, author, url, id, likes }) => {
   return {
     type: 'ADD',
     data: {
       title,
       author,
       url,
-      id
+      id,
+      likes
     }
   }
 }

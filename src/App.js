@@ -12,7 +12,6 @@ import './App.css'
 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -21,7 +20,7 @@ const App = () => {
 
   const dispatch = useDispatch()
   const notifications = useSelector(state => state.notifications)
-  const blogss = useSelector(state => state.blogs)
+  const blogs = useSelector(state => state.blogs)
 
   const setResponseAndClass = (newResponse, newClass) => {
     dispatch(setNotification(newResponse, newClass))
@@ -105,7 +104,7 @@ const App = () => {
   }
 
   const handleLikes = async (e) => {
-    const blog = blogss.find((blog) => blog.id === e.target.id)
+    const blog = blogs.find((blog) => blog.id === e.target.id)
     const id = e.target.id
     const newBlog = {
       ...blog,
@@ -178,7 +177,7 @@ const App = () => {
           >
             <BlogForm handlePosts={handleBlogPosts} />
           </Togglable>
-          {blogss.map(blog =>
+          {blogs.map(blog =>
             <Blog
               handleItemClick={handleVisibilityToggle}
               handleClearBlogId={handleClearBlogId}
