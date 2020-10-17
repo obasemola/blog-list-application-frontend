@@ -15,7 +15,6 @@ const notificationReducer = (state = initialState, action) => {
       notification: action.notification,
       color: action.color
     }
-    
 
   default:
     return state

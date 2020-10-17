@@ -7,6 +7,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 import './App.css'
 
 
@@ -19,11 +20,11 @@ const App = () => {
   const [blogId, setBlogId] = useState(null)
 
   const dispatch = useDispatch()
-  const notifications = useSelector(state => state)
+  const notifications = useSelector(state => state.notifications)
+  const blogss = useSelector(state => state.blogs)
 
   const setResponseAndClass = (newResponse, newClass) => {
     dispatch(setNotification(newResponse, newClass))
-    console.log(notifications.color)
     setTimeout(() => {
       dispatch(setNotification('', ''))
     }, 3000)
@@ -31,9 +32,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((a, b) => {
-        return b.likes - a.likes
-      }))
+      dispatch(initializeBlogs(blogs))
     )
   }, [])
 
@@ -182,7 +181,7 @@ const App = () => {
           >
             <BlogForm handlePosts={handleBlogPosts} />
           </Togglable>
-          {blogs.map(blog =>
+          {blogss.map(blog =>
             <Blog
               handleItemClick={handleVisibilityToggle}
               handleClearBlogId={handleClearBlogId}
