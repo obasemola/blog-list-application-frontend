@@ -1,3 +1,10 @@
+export const initializeBlogs = (blogs) => {
+  return {
+    type: 'INIT',
+    data: blogs
+  }
+}
+
 export const addBlog = ({ title, author, url, id }) => {
   return {
     type: 'ADD',
@@ -10,10 +17,10 @@ export const addBlog = ({ title, author, url, id }) => {
   }
 }
 
-export const initializeBlogs = (blogs) => {
+export const incrementLikes = (id) => {
   return {
-    type: 'INIT',
-    data: blogs
+    type: 'INCREMENTLIKES',
+    id
   }
 }
 
@@ -26,6 +33,18 @@ const blogReducer = (state = initialState, action) => {
 
   case 'ADD':
     return state.concat(action.data)
+
+  case 'INCREMENTLIKES':
+    return state.map((el) => {
+      if(el.id === action.id) {
+        return {
+          ...el,
+          likes: el.likes + 1
+        }
+      } else{
+        return el
+      }
+    })
 
   default:
     return state

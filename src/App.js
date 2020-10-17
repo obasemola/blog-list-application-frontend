@@ -7,7 +7,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, addBlog } from './reducers/blogReducer'
+import { initializeBlogs, addBlog, incrementLikes } from './reducers/blogReducer'
 import './App.css'
 
 
@@ -104,11 +104,8 @@ const App = () => {
     return toBeUsedToken
   }
 
-
-
-
   const handleLikes = async (e) => {
-    const blog = blogs.find((blog) => blog.id === e.target.id)
+    const blog = blogss.find((blog) => blog.id === e.target.id)
     const id = e.target.id
     const newBlog = {
       ...blog,
@@ -116,7 +113,7 @@ const App = () => {
     }
 
     const data = await blogService.update(id, newBlog)
-    setBlogs(blogs.map((blog) => blog.id === id ? data : blog))
+    dispatch(incrementLikes(id))
   }
 
   const handleDelete = async (e) => {
