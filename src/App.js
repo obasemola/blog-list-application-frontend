@@ -7,7 +7,12 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, addBlog, incrementLikes, deleteBlogs } from './reducers/blogReducer'
+import {
+  initializeBlogs,
+  addBlog, incrementLikes,
+  deleteBlogs
+} from './reducers/blogReducer'
+import { retrieveUser } from './reducers/userReducer'
 import './App.css'
 
 
@@ -21,6 +26,7 @@ const App = () => {
   const dispatch = useDispatch()
   const notifications = useSelector(state => state.notifications)
   const blogs = useSelector(state => state.blogs)
+  const use = useSelector(state => state.user)
 
   const setResponseAndClass = (newResponse, newClass) => {
     dispatch(setNotification(newResponse, newClass))
@@ -33,17 +39,18 @@ const App = () => {
     blogService.getAll().then(blogs =>
       dispatch(initializeBlogs(blogs))
     )
-  }, [])
+  }, [dispatch])
 
 
   useEffect(() => {
     const LoggingInUser = localStorage.getItem('LoggedInUser')
     if (LoggingInUser) {
       const user = JSON.parse(LoggingInUser)
+      // dispatch(retrieveUser(user))
       setUser(user)
       setName(user.name)
     }
-  }, [])
+  }, [dispatch])
 
 
   useEffect(() => {
@@ -83,10 +90,11 @@ const App = () => {
         username,
         password
       })
-
+      // console.log(user.name)
       blogService.setToken(user.token)
       localStorage.setItem('LoggedInUser', JSON.stringify(user))
-      setUser(user)
+      dispatch(retrieveUser(user))
+      console.log(use)
       setName(user.name)
       setUsername('')
       setPassword('')
@@ -97,11 +105,6 @@ const App = () => {
     }
   }
 
-  const getToken = () => {
-    const tokenUser = JSON.parse(localStorage.getItem('LoggedInUser'))
-    const toBeUsedToken = tokenUser.token
-    return toBeUsedToken
-  }
 
   const handleLikes = async (e) => {
     const blog = blogs.find((blog) => blog.id === e.target.id)
@@ -142,11 +145,12 @@ const App = () => {
   }
 
   const LogOut = () => {
+    console.log('logout')
     const loggingOutUser = localStorage.getItem('LoggedInUser')
     if (loggingOutUser) {
       localStorage.removeItem('LoggedInUser')
-      setUser(null)
-
+      dispatch(retrieveUser(null))
+      console.log(use)
     }
     return
   }
@@ -160,14 +164,14 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <div id='error' className={notifications.color}>{notifications.notification}</div>
-      {user === null && <LoginForm
+      {use === null && <LoginForm
         handleLogin={handleLogin}
         password={password}
         username={username}
         handleUsernameChange={handleUsernameChange}
         handlePasswordChange={handlePasswordChange} />}
 
-      {user !== null &&
+      {use !== null &&
         <div>
           {name} logged in
           <button id='logout' onClick={LogOut}>logout</button>
@@ -187,7 +191,7 @@ const App = () => {
               visibleId={blogId}
               handleLikes={handleLikes}
               handleDelete={handleDelete}
-              token={getToken()}
+              token={use.token}
             />)}
         </div>}
 
