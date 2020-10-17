@@ -7,7 +7,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, addBlog, incrementLikes } from './reducers/blogReducer'
+import { initializeBlogs, addBlog, incrementLikes, deleteBlogs } from './reducers/blogReducer'
 import './App.css'
 
 
@@ -124,7 +124,7 @@ const App = () => {
     if(window.confirm(`Remove blog ${title} by ${name}`)){
       console.log(id)
       const data = await blogService.remove(id)
-      setBlogs(blogs.filter(blog => blog.id !== id))
+      dispatch(deleteBlogs(id))
       setBlogId(null)
     } else {
       return

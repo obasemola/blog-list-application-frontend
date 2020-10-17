@@ -24,6 +24,13 @@ export const incrementLikes = (id) => {
   }
 }
 
+export const deleteBlogs = (id) => {
+  return {
+    type: 'DELETE',
+    id
+  }
+}
+
 const initialState = []
 
 const blogReducer = (state = initialState, action) => {
@@ -41,10 +48,13 @@ const blogReducer = (state = initialState, action) => {
           ...el,
           likes: el.likes + 1
         }
-      } else{
+      } else {
         return el
       }
     })
+
+  case 'DELETE':
+    return state.filter((el) => el.id !== action.id)
 
   default:
     return state
