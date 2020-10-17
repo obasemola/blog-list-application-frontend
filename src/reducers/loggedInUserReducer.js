@@ -1,4 +1,4 @@
-export const retrieveUser = (data) => {
+export const loggedInUser = (data) => {
   return {
     type: 'RETRIEVE',
     data
@@ -6,7 +6,7 @@ export const retrieveUser = (data) => {
 }
 
 
-const userReducer = (state = null, action) => {
+const loggedInUserReducer = (state = null, action) => {
   switch (action.type) {
 
   case 'RETRIEVE':
@@ -19,4 +19,4 @@ const userReducer = (state = null, action) => {
 }
 
 
-export default userReducer
+export default loggedInUserReducer

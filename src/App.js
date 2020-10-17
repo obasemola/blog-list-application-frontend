@@ -3,30 +3,33 @@ import { useSelector, useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import UserList from './components/UserList'
 import { setNotification } from './reducers/notificationReducer'
 import {
   initializeBlogs,
   addBlog, incrementLikes,
   deleteBlogs
 } from './reducers/blogReducer'
-import { retrieveUser } from './reducers/userReducer'
+import { loggedInUser } from './reducers/loggedInUserReducer'
+import { getUsersInfo } from './reducers/usersReducer'
 import './App.css'
 
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const [name, setName] = useState('')
   const [blogId, setBlogId] = useState(null)
 
   const dispatch = useDispatch()
   const notifications = useSelector(state => state.notifications)
   const blogs = useSelector(state => state.blogs)
-  const use = useSelector(state => state.user)
+  const use = useSelector(state => state.loggedInuser)
+  const usersInfo = useSelector(state => state.user)
 
   const setResponseAndClass = (newResponse, newClass) => {
     dispatch(setNotification(newResponse, newClass))
@@ -34,6 +37,12 @@ const App = () => {
       dispatch(setNotification('', ''))
     }, 3000)
   }
+
+  useEffect(() => {
+    userService.getUsers().then(users => {
+      dispatch(getUsersInfo(users))
+    })
+  },[dispatch])
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -46,8 +55,7 @@ const App = () => {
     const LoggingInUser = localStorage.getItem('LoggedInUser')
     if (LoggingInUser) {
       const user = JSON.parse(LoggingInUser)
-      // dispatch(retrieveUser(user))
-      setUser(user)
+      dispatch(loggedInUser(user))
       setName(user.name)
     }
   }, [dispatch])
@@ -90,10 +98,9 @@ const App = () => {
         username,
         password
       })
-      // console.log(user.name)
       blogService.setToken(user.token)
       localStorage.setItem('LoggedInUser', JSON.stringify(user))
-      dispatch(retrieveUser(user))
+      dispatch(loggedInUser(user))
       console.log(use)
       setName(user.name)
       setUsername('')
@@ -149,7 +156,7 @@ const App = () => {
     const loggingOutUser = localStorage.getItem('LoggedInUser')
     if (loggingOutUser) {
       localStorage.removeItem('LoggedInUser')
-      dispatch(retrieveUser(null))
+      dispatch(loggedInUser(null))
       console.log(use)
     }
     return
@@ -193,6 +200,10 @@ const App = () => {
               handleDelete={handleDelete}
               token={use.token}
             />)}
+          <h2>Users</h2>
+          {usersInfo.map((userInfo) => {
+            return <UserList key={userInfo.userId} userInfo={userInfo}/>
+          })}
         </div>}
 
     </div>
