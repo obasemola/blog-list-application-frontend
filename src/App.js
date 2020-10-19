@@ -213,13 +213,13 @@ const App = () => {
             <Route exact path="/users/:id">
               <UserBlog usersInfo={usersInfo}/>
             </Route>
-            <Route>
+            <Route exact path="/users">
               <h2>Users</h2>
               {usersInfo.map((userInfo) => {
                 return <UserList key={userInfo.userId} usersInfo={usersInfo} userInfo={userInfo}/>
               })}
             </Route>
-            <Route path="/">
+            <Route exact path="/">
             </Route>
           </Switch>
         </div>}
