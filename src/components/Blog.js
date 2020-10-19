@@ -1,4 +1,8 @@
 import React from 'react'
+import {
+  Route,
+  Link
+} from 'react-router-dom'
 
 
 const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleItemClick, handleClearBlogId })  => {
@@ -19,9 +23,11 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
     <div>
       <div className='mainDiv' style={blogStyle}>
         <div className='firstDiv'>
-          {blog.title} {blog.author}
-          <button id='hide'  style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>hide</button>
-          <button id='view' style={hideWhenInvisible} onClick={() => handleClearBlogId()}>view</button>
+          <Link to={`/blogs/${blog.id}`}>
+            {blog.title} {blog.author}
+            <button id='hide'  style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>hide</button>
+            <button id='view' style={hideWhenInvisible} onClick={() => handleClearBlogId()}>view</button>
+          </Link>
         </div>
 
         {blog.id !== visibleId &&
@@ -30,7 +36,7 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
               {blog.url}
             </div>
             <div id='likes'>
-            likes <span id='num_of_likes'>{blog.likes}</span>
+              <span id='num_of_likes'>{blog.likes}</span> likes
               <button className='like' id={blog.id} onClick={handleLikes}>like</button>
             </div>
             <div>

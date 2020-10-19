@@ -14,6 +14,7 @@ import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import UserList from './components/UserList'
 import UserBlog from './components/UserBlogs'
+import BlogExpanded from './components/BlogExpanded'
 import { setNotification } from './reducers/notificationReducer'
 import {
   initializeBlogs,
@@ -196,8 +197,12 @@ const App = () => {
             <BlogForm handlePosts={handleBlogPosts} />
           </Togglable>
           <Switch>
+            <Route exact path="/blogs/:id">
+              <BlogExpanded usersInfo={usersInfo} blogs={blogs}/>
+            </Route>
             <Route path="/blogs">
               {blogs.map(blog =>
+
                 <Blog
                   handleItemClick={handleVisibilityToggle}
                   handleClearBlogId={handleClearBlogId}
@@ -208,7 +213,8 @@ const App = () => {
                   handleLikes={handleLikes}
                   handleDelete={handleDelete}
                   token={use.token}
-                />)}
+                />
+              )}
             </Route>
             <Route exact path="/users/:id">
               <UserBlog usersInfo={usersInfo}/>

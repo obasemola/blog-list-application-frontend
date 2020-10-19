@@ -3,18 +3,18 @@ import { useParams } from 'react-router-dom'
 
 const UserBlog = ({ usersInfo }) => {
   const id = useParams().id
-  const blog = usersInfo.find(userInfo => userInfo.userId ===id)
-  if(!blog){
+  const user = usersInfo.find(userInfo => userInfo.userId ===id)
+  if(!user){
     return null
   }
 
-  console.log(blog)
+  console.log(user)
 
   return (
     <div>
-      <h2>{blog.userName}</h2>
+      <h2>{user.userName}</h2>
       <h3>Added blogs</h3>
-      {blog.userBlogs.map((userBlog) => <p key={userBlog.id}>{userBlog.title}</p>)}
+      {user.userBlogs.map((userBlog) => <p key={userBlog.id}>{userBlog.title}</p>)}
     </div>
   )
 }

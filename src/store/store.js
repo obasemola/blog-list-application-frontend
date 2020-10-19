@@ -15,7 +15,6 @@ const store = createStore(reducer)
 store.subscribe(() => {
   const newState = store.getState()
   console.log(newState.user)
-  // console.log(newState.color)
 })
 
 export default store
