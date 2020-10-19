@@ -1,12 +1,10 @@
 import React from 'react'
-import { Switch, Route, BrowserRouter as Router, Link } from 'react-router-dom'
-import UserBlog from './UserBlogs'
+import { Link } from 'react-router-dom'
 
-const UserList = ({ userInfo, usersInfo }) => {
+const UserList = ({ userInfo }) => {
 
   return (
     <div>
-
       <table>
         <tbody>
           <tr>

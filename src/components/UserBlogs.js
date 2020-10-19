@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom'
 const UserBlog = ({ usersInfo }) => {
   const id = useParams().id
   const blog = usersInfo.find(userInfo => userInfo.userId ===id)
+  if(!blog){
+    return null
+  }
 
   console.log(blog)
 
