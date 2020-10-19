@@ -1,9 +1,12 @@
 import React from 'react'
-import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { Switch, Route, BrowserRouter as Router, Link } from 'react-router-dom'
+import UserBlog from './UserBlogs'
 
-const UserList = ({ userInfo }) => (
-  <div>
-    <Router>
+const UserList = ({ userInfo, usersInfo }) => {
+
+  return (
+    <div>
+
       <table>
         <tbody>
           <tr>
@@ -16,8 +19,10 @@ const UserList = ({ userInfo }) => (
           </tr>
         </tbody>
       </table>
-    </Router>
-  </div>
-)
+    </div>
+  )
+
+
+}
 
 export default UserList

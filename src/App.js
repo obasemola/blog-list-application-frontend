@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -8,6 +13,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import UserList from './components/UserList'
+import UserBlog from './components/UserBlogs'
 import { setNotification } from './reducers/notificationReducer'
 import {
   initializeBlogs,
@@ -168,17 +174,18 @@ const App = () => {
 
 
   return (
-    <div>
-      <h2>blogs</h2>
-      <div id='error' className={notifications.color}>{notifications.notification}</div>
-      {use === null && <LoginForm
-        handleLogin={handleLogin}
-        password={password}
-        username={username}
-        handleUsernameChange={handleUsernameChange}
-        handlePasswordChange={handlePasswordChange} />}
+    <Router>
+      <div>
+        <h2>blogs</h2>
+        <div id='error' className={notifications.color}>{notifications.notification}</div>
+        {use === null && <LoginForm
+          handleLogin={handleLogin}
+          password={password}
+          username={username}
+          handleUsernameChange={handleUsernameChange}
+          handlePasswordChange={handlePasswordChange} />}
 
-      {use !== null &&
+        {use !== null &&
         <div>
           {name} logged in
           <button id='logout' onClick={LogOut}>logout</button>
@@ -188,25 +195,36 @@ const App = () => {
           >
             <BlogForm handlePosts={handleBlogPosts} />
           </Togglable>
-          {blogs.map(blog =>
-            <Blog
-              handleItemClick={handleVisibilityToggle}
-              handleClearBlogId={handleClearBlogId}
-              key={blog.id}
-              blog={blog}
-              name={name}
-              visibleId={blogId}
-              handleLikes={handleLikes}
-              handleDelete={handleDelete}
-              token={use.token}
-            />)}
-          <h2>Users</h2>
-          {usersInfo.map((userInfo) => {
-            return <UserList key={userInfo.userId} userInfo={userInfo}/>
-          })}
+          <Switch>
+            <Route path="/blogs">
+              {blogs.map(blog =>
+                <Blog
+                  handleItemClick={handleVisibilityToggle}
+                  handleClearBlogId={handleClearBlogId}
+                  key={blog.id}
+                  blog={blog}
+                  name={name}
+                  visibleId={blogId}
+                  handleLikes={handleLikes}
+                  handleDelete={handleDelete}
+                  token={use.token}
+                />)}
+            </Route>
+            <Route exact path="/users/:id">
+              <UserBlog usersInfo={usersInfo}/>
+            </Route>
+            <Route>
+              <h2>Users</h2>
+              {usersInfo.map((userInfo) => {
+                return <UserList key={userInfo.userId} usersInfo={usersInfo} userInfo={userInfo}/>
+              })}
+            </Route>
+            <Route path="/">
+            </Route>
+          </Switch>
         </div>}
-
-    </div>
+      </div>
+    </Router>
   )
 }
 

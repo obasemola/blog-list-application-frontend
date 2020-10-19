@@ -13,7 +13,8 @@ const usersReducer = (state = [], action) => {
       return {
         userName: user.name,
         numberOfBlogs: user.blogs.length,
-        userId: user.id
+        userId: user.id,
+        userBlogs: user.blogs
       }
     })
 
