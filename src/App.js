@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from 'react-router-dom'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
@@ -115,6 +116,7 @@ const App = () => {
       setName(user.name)
       setUsername('')
       setPassword('')
+
     } catch (error) {
       const newResponse = 'Wrong username or password'
       const newClass = 'error'
@@ -179,7 +181,7 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <div className='container'>
         <div>
 
           <div id='error' className={notifications.color}>{notifications.notification}</div>
@@ -209,28 +211,25 @@ const App = () => {
               <BlogExpanded handleLikes={handleLikes} usersInfo={usersInfo} blogs={blogs}/>
             </Route>
             <Route path="/blogs">
-              {blogs.map(blog =>
+              <h4>Blogs</h4>
+              <Blog
+                blogs={blogs}
+                handleItemClick={handleVisibilityToggle}
+                handleClearBlogId={handleClearBlogId}
+                name={name}
+                visibleId={blogId}
+                handleDelete={handleDelete}
+                token={use.token}
+              />
 
-                <Blog
-                  handleItemClick={handleVisibilityToggle}
-                  handleClearBlogId={handleClearBlogId}
-                  key={blog.id}
-                  blog={blog}
-                  name={name}
-                  visibleId={blogId}
-                  handleDelete={handleDelete}
-                  token={use.token}
-                />
-              )}
             </Route>
             <Route exact path="/users/:id">
               <UserBlog usersInfo={usersInfo}/>
             </Route>
             <Route exact path="/users">
               <h2>Users</h2>
-              {usersInfo.map((userInfo) => {
-                return <UserList key={userInfo.userId} usersInfo={usersInfo} userInfo={userInfo}/>
-              })}
+              <UserList usersInfo={usersInfo}/>
+
             </Route>
             <Route exact path="/">
             </Route>

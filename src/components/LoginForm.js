@@ -1,7 +1,6 @@
 import React from 'react'
-import BlogForm from './BlogForm'
 
-const Blogform = ({
+const LoginForm = ({
   username,
   password,
   handlePasswordChange,
@@ -38,6 +37,6 @@ const Blogform = ({
 
 )
 
-BlogForm.displayName = 'Blogform'
+LoginForm.displayName = 'Blogform'
 
-export default Blogform
+export default LoginForm

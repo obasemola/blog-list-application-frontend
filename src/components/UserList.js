@@ -1,22 +1,27 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
-const UserList = ({ userInfo }) => {
+const UserList = ({ usersInfo }) => {
 
   return (
     <div>
-      <table>
+      <Table striped className='table table-dark'>
         <tbody>
-          <tr>
-            <td>
-              <Link to={`/users/${userInfo.userId}`}>
-                {userInfo.userName}
-              </Link>
-            </td>
-            <td>{userInfo.numberOfBlogs}</td>
-          </tr>
+          {usersInfo.map(userInfo =>
+            <tr key={userInfo.userId}>
+              <td>
+                <Link to={`/users/${userInfo.userId}`}>
+                  {userInfo.userName}
+                </Link>
+              </td>
+              <td className='blogStyle'>
+                {userInfo.numberOfBlogs}
+              </td>
+            </tr>
+          )}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 

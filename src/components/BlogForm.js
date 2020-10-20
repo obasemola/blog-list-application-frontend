@@ -1,4 +1,5 @@
 import React from 'react'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = ({ handlePosts }) => {
   // const [title, setTitle] = useState('')
@@ -28,39 +29,45 @@ const BlogForm = ({ handlePosts }) => {
   return (
     <div>
       <h2>Create new</h2>
-      <form onSubmit={addPosts}>
-        <div>
-          title:
-          <input
-            className='title'
-            type='text'
-            value={title}
-            name='title'
+      <Form onSubmit={addPosts}>
+        <Form.Group>
+          <div>
+            <Form.Label>title:</Form.Label>
 
-          />
-        </div>
-        <div>
-          author:
-          <input
-            className='author'
-            type='text'
-            value={author}
-            name='author'
+            <Form.Control
+              className='title'
+              type='text'
+              value={title}
+              name='title'
 
-          />
-        </div>
-        <div>
-          url:
-          <input
-            className='url'
-            type='text'
-            value={url}
-            name='url'
+            />
+          </div>
+          <div>
+            <Form.Label>author:</Form.Label>
+            <Form.Control
+              className='author'
+              type='text'
+              value={author}
+              name='author'
 
-          />
-        </div>
-        <button id='create'>create</button>
-      </form>
+            />
+          </div>
+          <div>
+            <Form.Label>url:</Form.Label>
+
+            <Form.Control
+              className='url'
+              type='text'
+              value={url}
+              name='url'
+
+            />
+          </div>
+          <Button variant='primary' type='submit' id='create'>
+          create
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }
