@@ -5,7 +5,7 @@ export const initializeBlogs = (blogs) => {
   }
 }
 
-export const addBlog = ({ title, author, url, id, likes }) => {
+export const addBlog = ({ title, author, url, id, likes, comments }) => {
   return {
     type: 'ADD',
     data: {
@@ -13,7 +13,8 @@ export const addBlog = ({ title, author, url, id, likes }) => {
       author,
       url,
       id,
-      likes
+      likes,
+      comments
     }
   }
 }
@@ -29,6 +30,14 @@ export const deleteBlogs = (id) => {
   return {
     type: 'DELETE',
     id
+  }
+}
+
+export const addComment = (id, data) => {
+  return {
+    type: 'ADDCOMMENT',
+    id,
+    data
   }
 }
 
@@ -48,6 +57,18 @@ const blogReducer = (state = initialState, action) => {
         return {
           ...el,
           likes: el.likes + 1
+        }
+      } else {
+        return el
+      }
+    })
+
+  case 'ADDCOMMENT':
+    return state.map((el) => {
+      if(el.id === action.id) {
+        return {
+          ...el,
+          comments: el.comments.concat(action.data)
         }
       } else {
         return el

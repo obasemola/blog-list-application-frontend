@@ -1,10 +1,13 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
+import { addComment } from '../reducers/blogReducer'
 
 
 const BlogExpanded = ({ blogs, usersInfo, handleLikes }) => {
+  const dispatch = useDispatch()
   const id = useParams().id
   const blog = blogs.find(blog => blog.id === id)
   const usersBlog = usersInfo.find(userInfo => userInfo.userBlogs.find(user => user.id === id))
@@ -28,6 +31,7 @@ const BlogExpanded = ({ blogs, usersInfo, handleLikes }) => {
     }
     e.target.comment.value = ''
     const data = await blogService.update(id, newBlog)
+    dispatch(addComment(id, comment))
 
     console.log(blog.comments)
     console.log(data)

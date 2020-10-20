@@ -56,7 +56,7 @@ const App = () => {
     blogService.getAll().then(blogs =>
       dispatch(initializeBlogs(blogs))
     )
-  }, [dispatch])
+  }, [dispatch, ])
 
 
   useEffect(() => {
