@@ -8,8 +8,6 @@ const UserBlog = ({ usersInfo }) => {
     return null
   }
 
-  console.log(user)
-
   return (
     <div>
       <h2>{user.userName}</h2>

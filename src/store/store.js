@@ -14,7 +14,7 @@ const reducer = combineReducers({
 const store = createStore(reducer)
 store.subscribe(() => {
   const newState = store.getState()
-  console.log(newState.user)
+  // console.log(newState.user)
 })
 
 export default store

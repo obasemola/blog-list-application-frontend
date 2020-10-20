@@ -206,9 +206,9 @@ const App = () => {
           </Togglable>
           <Switch>
             <Route exact path="/blogs/:id">
-              <BlogExpanded usersInfo={usersInfo} blogs={blogs}/>
+              <BlogExpanded handleLikes={handleLikes} usersInfo={usersInfo} blogs={blogs}/>
             </Route>
-            // <Route path="/blogs">
+            <Route path="/blogs">
               {blogs.map(blog =>
 
                 <Blog
@@ -218,7 +218,6 @@ const App = () => {
                   blog={blog}
                   name={name}
                   visibleId={blogId}
-                  handleLikes={handleLikes}
                   handleDelete={handleDelete}
                   token={use.token}
                 />

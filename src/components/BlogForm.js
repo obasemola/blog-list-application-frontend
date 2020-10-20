@@ -21,10 +21,6 @@ const BlogForm = ({ handlePosts }) => {
     e.target.title.value = ''
     e.target.author.value = ''
     e.target.url.value = ''
-
-    // setTitle('')
-    // setAuthor('')
-    // setUrl('')
   }
 
 
@@ -40,7 +36,7 @@ const BlogForm = ({ handlePosts }) => {
             type='text'
             value={title}
             name='title'
-            // onChange={((e) => setTitle(e.target.value))}
+
           />
         </div>
         <div>
@@ -50,7 +46,7 @@ const BlogForm = ({ handlePosts }) => {
             type='text'
             value={author}
             name='author'
-            // onChange={((e) => setAuthor(e.target.value))}
+
           />
         </div>
         <div>
@@ -60,7 +56,7 @@ const BlogForm = ({ handlePosts }) => {
             type='text'
             value={url}
             name='url'
-            // onChange={((e) => setUrl(e.target.value))}
+
           />
         </div>
         <button id='create'>create</button>
