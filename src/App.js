@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from 'react-router-dom'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
@@ -81,9 +82,11 @@ const App = () => {
 
   const handleVisibilityToggle = (id) => {
     setBlogId(id)
+    console.log(blogId)
   }
 
   const handleClearBlogId = () => {
+    console.log(blogId)
     setBlogId(null)
   }
 
@@ -177,19 +180,24 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h2>blogs</h2>
-        <div id='error' className={notifications.color}>{notifications.notification}</div>
-        {use === null && <LoginForm
-          handleLogin={handleLogin}
-          password={password}
-          username={username}
-          handleUsernameChange={handleUsernameChange}
-          handlePasswordChange={handlePasswordChange} />}
+        <div>
+
+          <div id='error' className={notifications.color}>{notifications.notification}</div>
+          {use === null && <LoginForm
+            handleLogin={handleLogin}
+            password={password}
+            username={username}
+            handleUsernameChange={handleUsernameChange}
+            handlePasswordChange={handlePasswordChange} />}
+        </div>
 
         {use !== null &&
         <div>
+          <Link to="/blogs">blog </Link>
+          <Link to="/users"> users </Link>
           {name} logged in
           <button id='logout' onClick={LogOut}>logout</button>
+          <h2>blog app</h2>
           <Togglable
             buttonLabel='create'
             ref={blogRef}
@@ -200,7 +208,7 @@ const App = () => {
             <Route exact path="/blogs/:id">
               <BlogExpanded usersInfo={usersInfo} blogs={blogs}/>
             </Route>
-            <Route path="/blogs">
+            // <Route path="/blogs">
               {blogs.map(blog =>
 
                 <Blog

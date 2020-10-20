@@ -1,11 +1,8 @@
 import React from 'react'
-import {
-  Route,
-  Link
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
-const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleItemClick, handleClearBlogId })  => {
+const Blog = ({ blog })  => {
 
 
   const blogStyle = {
@@ -16,40 +13,14 @@ const Blog = ({ token, handleDelete, handleLikes, name, blog, visibleId, handleI
     marginBottom: 5
   }
 
-  const showWhenVisible = { display: visibleId === blog.id ? 'none' : '' }
-  const hideWhenInvisible = { display: visibleId === blog.id ? '' : 'none' }
-
   return (
     <div>
       <div className='mainDiv' style={blogStyle}>
         <div className='firstDiv'>
           <Link to={`/blogs/${blog.id}`}>
             {blog.title} {blog.author}
-            <button id='hide'  style={showWhenVisible} onClick={() => handleItemClick(blog.id)}>hide</button>
-            <button id='view' style={hideWhenInvisible} onClick={() => handleClearBlogId()}>view</button>
           </Link>
         </div>
-
-        {blog.id !== visibleId &&
-          <div className='secondDiv'>
-            <div>
-              {blog.url}
-            </div>
-            <div id='likes'>
-              <span id='num_of_likes'>{blog.likes}</span> likes
-              <button className='like' id={blog.id} onClick={handleLikes}>like</button>
-            </div>
-            <div>
-              {name}
-            </div>
-            {token && <button
-              name={blog.author}
-              title={blog.title}
-              onClick={handleDelete}
-              className='deleteBlog'
-              id={blog.id}>delete</button>}
-          </div>
-        }
       </div>
     </div>
   )
