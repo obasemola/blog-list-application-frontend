@@ -4,8 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useHistory
+  Link
 } from 'react-router-dom'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
